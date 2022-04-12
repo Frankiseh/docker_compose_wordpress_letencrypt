@@ -1,0 +1,35 @@
+version: "3.3"
+
+services: 
+  # here is the wordpress engine php engine and apache
+  wordpress:
+    image: wordpress:5.2.2-php7.3-apache
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mysql
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src:/var/www/html
+    env_file:
+      - .env
+    ports:
+      - 80:80
+
+
+  mysql: 
+    container_name: mysql
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/configs/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - 3306:3306
+    image: mysql:5.6
+    restart: always
+    env_file:
+      - .env
+
+
+  #nginx:
+
